@@ -49,6 +49,12 @@ $ sudo systemctl daemon-reload
 $ sudo systemctl start prometheus
 $ sudo systemctl status prometheus
 
+# configuring Prometheus for automatic system startup
+$sudo systemctl enable prometheus
+
+# check if everything is ok in the logs
+$ sudo journalctl -u prometheus
+
 # access Prometheus graphical interface and metrics through the browser
 http://localhost:9090
 http://localhost:9090/metrics
