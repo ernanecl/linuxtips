@@ -32,4 +32,22 @@ $ sudo mv prometheus-2.51.1.linux-amd64/console_libraries /etc/prometheus/
 $ sudo addgroup --system prometheus
 $ sudo adduser --shell /sbin/nologin --system --group prometheus
 
-# create the "Prometheus" service and add the page content ""
+# create the "Prometheus" service and add the page content "https://github.com/ernanecl/linuxtips/blob/main/DescomplicandoPrometheus/day-1/prometheus.service"
+$ sudo vim /etc/systemd/system/prometheus.service
+
+# use the "chown" command to change the owner and group of "Prometheus" files and directories on "Linux"
+$ sudo chown -R prometheus:prometheus /etc/prometheus/
+$ sudo chown -R prometheus:prometheus /var/lib/prometheus/
+$ sudo chown -R prometheus:prometheus /usr/local/bin/prometheus
+$ sudo chown -R prometheus:prometheus /usr/local/bin/promtool
+
+# run reload of "systemctl daemon" to reload the "systemd" manager configuration
+$ sudo systemctl daemon-reload
+
+# start and check status of "Prometheus"
+$ sudo systemctl start prometheus
+$ sudo systemctl status prometheus
+
+# access Prometheus graphical interface and metrics through the browser
+http://localhost:9090
+http://localhost:9090/metrics
