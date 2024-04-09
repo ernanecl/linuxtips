@@ -19,7 +19,7 @@ $ sudo mv prometheus-2.51.1.linux-amd64/promtool /usr/local/bin
 
 # create a directory named prometheus in the "/etc/" and "/var/lib/" directories
 $ sudo mkdir /etc/prometheus
-$ sudo mkdir /var/lib/
+$ sudo mkdir /var/lib/prometheus
 
 # copy the file "prometheus.yml" to "/etc/prometheus/"
 $ sudo cp prometheus-2.51.1.linux-amd64/prometheus.yml /etc/prometheus/
@@ -36,6 +36,7 @@ $ sudo adduser --shell /sbin/nologin --system --group prometheus
 $ sudo vim /etc/systemd/system/prometheus.service
 
 # use the "chown" command to change the owner and group of "Prometheus" files and directories on "Linux"
+$ sudo chown -R prometheus:prometheus /var/log/prometheus
 $ sudo chown -R prometheus:prometheus /etc/prometheus/
 $ sudo chown -R prometheus:prometheus /var/lib/prometheus/
 $ sudo chown -R prometheus:prometheus /usr/local/bin/prometheus
