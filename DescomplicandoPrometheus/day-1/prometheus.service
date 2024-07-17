@@ -22,5 +22,3 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target
-
-# content original: https://github.com/badtuxx/DescomplicandoPrometheus/blob/main/pt/src/day-1/files/prometheus.service
