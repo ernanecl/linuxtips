@@ -75,8 +75,8 @@ WantedBy=multi-user.target
 
 # use the "chown" command to change the owner and group of "Prometheus" files and directories on "Linux"
 $ sudo chown -R prometheus:prometheus /var/log/prometheus
-$ sudo chown -R prometheus:prometheus /etc/prometheus/
-$ sudo chown -R prometheus:prometheus /var/lib/prometheus/
+$ sudo chown -R prometheus:prometheus /etc/prometheus
+$ sudo chown -R prometheus:prometheus /var/lib/prometheus
 $ sudo chown -R prometheus:prometheus /usr/local/bin/prometheus
 $ sudo chown -R prometheus:prometheus /usr/local/bin/promtool
 
