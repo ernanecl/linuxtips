@@ -199,6 +199,12 @@ Then we add the following content:
 
 ### Setting Target
 
+#### View target hosts
+
+    curl -s http://localhost:9090/api/v1/targets
+    curl -s http://localhost:9090/api/v1/targets | jq .
+
+
 #### Access prometheus.yml file
 
     sudo vim /etc/prometheus/prometheus.yml
@@ -240,8 +246,20 @@ Then we add the following content:
 
 #### Get Prometheus targets from the terminal
 
-    curl localhost:9090/api/v1/targets | jq .
+    curl -s localhost:9090/api/v1/targets | jq .
 
+
+#### Get Prometheus targets from the terminal, specifying the port
+
+    curl -s localhost:9090/api/v1/targets | jq . | grep -i "localhost:8899"
+
+
+#### Get Prometheus query from the terminal, specifying the query
+
+    curl -s localhost:9090/api/v1/query?query=numero_de_astronautas | jq .
+
+
+### 
 
 
 
