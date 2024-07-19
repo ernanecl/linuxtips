@@ -1,12 +1,12 @@
 ## Extra content
 
 ### Data Model
-Seach metrics through the terminal
+##### Seach metrics through the terminal
 
     curl localhost:9090/metrics
 
 
-Get information in text mode via the terminal.
+#### Get information in text mode via the terminal.
 
 Curl is a program that allows you to make HTTP requests, that is, you can make requests to a URL and receive a response.
 
@@ -44,7 +44,7 @@ Data model - Prometheus
 Exemple
 
     up {instance="localhost:9090", job="prometheus"}   1
-    
+
 
 ### Exporter
 In this step we will create an exporter with Python
