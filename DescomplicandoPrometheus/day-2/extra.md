@@ -195,7 +195,52 @@ Then we add the following content:
 
 #### Run and export to port 8899 of the machine and container
     
-    docker run -d -p 8899:8899 --name first-exporter first-exporter:0.1
+    sudo docker run -d -p 8899:8899 --name first-exporter first-exporter:0.1
+
+### Setting Target
+
+#### Access prometheus.yml file
+
+    sudo vim /etc/prometheus/prometheus.yml
+
+#### Add the following contents
+
+    - job_name: "primeiro exporter" 
+      static_configs:
+        - targets: ["localhost:8899"]
+
+#### The final file will look like the example below
+
+    global:
+        scrape_interval: 15s
+        evaluation_interval: 15s
+        scrape_timeout: 10s
+
+    rule_files:
+
+    scrape_configs:
+        - job_name: "prometheus"
+          static_configs: 
+            - targets: ["localhost:9090"]
+
+        - job_name: "primeiro exporter" 
+          static_configs:
+            - targets: ["localhost:8899"]
+
+
+#### Restarting Prometheus
+
+    sudo systemctl restart prometheus
+
+
+#### Check Prometheus status
+
+    sudo systemctl status prometheus
+
+
+#### Get Prometheus targets from the terminal
+
+    curl localhost:9090/api/v1/targets | jq .
 
 
 
