@@ -122,7 +122,8 @@ The exporter has the function of requesting the number of people in the space fr
 
 If you need to install any Python library like "requests" or "prometheus-client" run the commands below
 "requests" and "prometheus-client" are Python libraries
-#### to install them, run the commands below
+
+#### To install them, run the commands below
 
     pip install requests
     pip install prometheus-client
@@ -139,7 +140,7 @@ If you need to install any Python library like "requests" or "prometheus-client"
 
 
 #### View exporter metrics on port 8899
-through the terminal, run the command below to check if everything is ok
+Through the terminal, run the command below to check if everything is ok
    
     curl http://localhost:8899/metrics/
 
