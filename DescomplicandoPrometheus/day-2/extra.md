@@ -31,7 +31,7 @@ to install it use the following command
     apt install jq -y
 
 
-#### content:
+#### Content
 
     https://www.cyberithub.com/how-to-install-jq-json-processor-on-debian-10-11/
 
@@ -41,7 +41,7 @@ to install it use the following command
     metric {label_name="label_value"}   value
 
 
-##### Exemple
+Exemple
 
     up {instance="localhost:9090", job="prometheus"}   1
 
@@ -117,7 +117,6 @@ Starting with the creation of the exporter.py file
         exit(0) # Finaliza o programa
 
 
-
 The exporter has the function of requesting the number of people in the space from the URL(), with the definition of the port (8899) for the metrics and the condition of updating the metric every 10 seconds.
 
 If you need to install any Python library like "requests" or "prometheus-client" run the commands below
@@ -129,7 +128,7 @@ If you need to install any Python library like "requests" or "prometheus-client"
     pip install prometheus-client
 
 
-#### prometheus-client library official document:
+#### The official document of the prometheus-client library
 
     github.com/prometheus/client_python
 
