@@ -17,13 +17,14 @@ To use the "jq" command we need to install it
 to install it use the following command
     apt install jq -y
 
-content: https://www.cyberithub.com/how-to-install-jq-json-processor-on-debian-10-11/
+content:
+    https://www.cyberithub.com/how-to-install-jq-json-processor-on-debian-10-11/
 
 Data model - Prometheus
     metric {label_name="label_value"}   value
 
-    Exemple
-        up {instance="localhost:9090", job="prometheus"}   1
+Exemple
+    up {instance="localhost:9090", job="prometheus"}   1
 
 ### Exporter
 In this step we will create an exporter with Python
@@ -111,5 +112,53 @@ through the terminal, run the command below to check if everything is ok
 
 Remembering that you can access via browser by accessing the following URL
     http://localhost:8899/metrics/
+
+### Docker container exporter
+We need to create a Dockerfile document for the container.
+Then we add the following content:
+    # Vamos utilizar a imagem slim do Python
+    FROM python:3.8-slim
+
+    # Adicionando algumas labels para identificar a imagem
+    LABEL maintainer Ernane <email@email.com>
+    LABEL description "Dockerfile para criar a imagem de container do nosso primeiro exporter para o Prometheus"
+
+    # Indicando qual diretorio esta trabalhando e adicionando o exporter.py para a nossa imagem
+    WORKDIR /app
+    COPY . /app
+
+    # Instalando as bibliotecas necessárias para o exporter
+    # através do `requirements.txt`.
+    RUN pip3 install -r requirements.txt
+
+    # Executando o exporter
+    CMD python3 exporter.py
+
+Installing Docker
+    
+    curl -fsSL https://get.docker.com | bash
+    
+Check if something is running in Docker
+    sudo docker ps
+
+
+Create container 
+    
+    sudo docker build -t first-exporter:0.1 .
+
+
+Check Docker image
+
+    sudo docker image ls | grep first-exporter
+
+
+Run and export to port 8899 of the machine and container
+    docker run -d -p 8899:8899 --name first-exporter first-exporter:0.1
+    
+
+
+
+
+
 
 ### Queries
