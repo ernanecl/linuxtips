@@ -1,8 +1,8 @@
 # Prometheus installation
 
-# copy the Prometheus file link from the tool's official website
+# access the official Prometheus website
 # "https://prometheus.io/download/"
-# after copying the link corresponding to the system, run the following command in the terminal
+# after accessing, copy the link corresponding to the system and execute the following command in the terminal
 $ sudo curl -LO https://github.com/prometheus/prometheus/releases/download/v2.51.1/prometheus-2.51.1.linux-amd64.tar.gz
 
 # if "curl" is not installed, update the system and then run the install command
@@ -21,7 +21,7 @@ $ ./prometheus --version
 $ sudo mv prometheus-2.51.1.linux-amd64/prometheus /usr/local/bin
 $ sudo mv prometheus-2.51.1.linux-amd64/promtool /usr/local/bin
 
-# create a configuration directory called prometheus in the fallowing path "/etc/"
+# create a configuration directory called prometheus in the following path "/etc/"
 # copy the file "prometheus.yml" to "/etc/prometheus/"
 $ sudo mkdir /etc/prometheus
 $ sudo cp prometheus-2.51.1.linux-amd64/prometheus.yml /etc/prometheus/
@@ -80,7 +80,7 @@ $ sudo chown -R prometheus:prometheus /var/lib/prometheus
 $ sudo chown -R prometheus:prometheus /usr/local/bin/prometheus
 $ sudo chown -R prometheus:prometheus /usr/local/bin/promtool
 
-# run reload of "systemctl daemon" to reload the "systemd" manager configuration
+# reload "systemctl daemon" to reload the "systemd" manager configuration
 $ sudo systemctl daemon-reload
 
 # start and check status of "Prometheus"
