@@ -6,8 +6,8 @@ LABEL maintainer Ernane CL <ernane_cruz@hotmail.com>
 LABEL description "Dockerfile para criar a imagem de container do nosso primeiro exporter para o Prometheus"
 
 # Adicionando o exporter.py para a nossa imagem
-WORKDIR /app
-COPY . /app
+WORKDIR /exporter
+COPY . /exporter/
 
 # Instalando as bibliotecas necessárias para o exporter
 # através do `requirements.txt`.

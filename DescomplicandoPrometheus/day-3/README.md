@@ -1,6 +1,6 @@
-## Extra content
+## Content
 
-### Create a second exporter in Go
+### Creating and running exporter using Go
 
 You need to install the `Go` package, to install `Go` on `Debian`, just run the following command.
 
@@ -97,11 +97,15 @@ go mod init second-exporter
 go mod tidy
 ```
 
+&nbsp;
+
 Now we can compile the code as shown in the example below.
 
 ```BASH
 go build segundo-exporter.go
 ```
+
+&nbsp;
 
 Note that the command generated a Go binary called `second-exporter`, let's run it
 
@@ -122,3 +126,165 @@ curl http://localhost:7788/metrics
 ```
 
 &nbsp;
+&nbsp;
+
+### New container for second exporter
+
+#### Creating a container image with the exporter in Go
+
+Let's add our `Golang exporter` to a `container`, we will create a file called `Dockerfile` in the `second-exporter` file with the following content:
+
+```DOCKERFILE
+FROM golang:1.22.5-alpine3.20 AS construindo
+
+WORKDIR /app
+COPY . /app/
+
+RUN go build second-exporter.go
+
+FROM alpine:3.20
+LABEL maintainer Ernane <ernane@email.com.br>
+LABEL description "Executando o nosso segundo exporter"
+COPY --from=construindo /app/second-exporter /app/second-exporter
+EXPOSE 7788
+WORKDIR /app
+CMD ["./second-exporter"]
+```
+
+&nbsp;
+
+Now let's `build` the image of our `exporter`, to do this we run the following command.
+
+```BASH
+docker build -t second-exporter:1.0 .
+```
+
+&nbsp;
+
+Let's list the new `container` image with the `exporter`.
+
+```BASH
+docker images | grep second-exporter
+```
+
+&nbsp;
+
+Okay, it's there, now run the `exporter`.
+
+```BASH
+docker run -d --name second-exporter -p 7788:7788 second-exporter:1.0
+```
+
+Now let's list our running `containers`.
+
+```BASH
+docker ps
+```
+
+Let's access the metrics with following command.
+
+```BASH
+curl http://localhost:7788/metrics
+```
+
+&nbsp;
+&nbsp;
+
+#### Configuring Prometheus for new Target
+
+Accessing `prometheus.yml` file and adding the following content.
+
+```YML
+- job_name: 'segundo-exporter'
+  static_configs:
+    - targets: ['localhost:7788']
+```
+
+&nbsp;
+
+The final version of the file will look like the model below.
+
+```YML
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: "Meu Primeiro Exporter"
+    static_configs:
+      - targets: ["localhost:8899"]
+  
+  - job_name: 'segundo-exporter'
+    static_configs:
+      - targets: ['localhost:7788']
+```
+
+&nbsp;
+
+Restart `Prometheus` to load the new settings.
+
+```BASH
+systemctl restart prometheus
+```
+
+&nbsp;
+
+You can also do this via `kill` command.
+
+```BASH
+kill -HUP $(pidof prometheus)
+```
+
+&nbsp;
+
+Access Prometheus via browser and check if the new target with the new metrics is there.
+
+```
+http://localhost:9090
+```
+
+&nbsp;
+
+Check metrics via `terminal`.
+
+```BASH
+curl http://localhost:7788/metrics
+```
+
+&nbsp;
+&nbsp;
+
+
+
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+&nbsp;
+
