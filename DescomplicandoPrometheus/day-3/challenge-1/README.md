@@ -6,7 +6,7 @@ The services that need to be checked if they are installed are `Prometheus`, `Go
 
 ```BASH
 prometheus --version
-docket --version
+docker --version
 go version
 ```
 
