@@ -27,7 +27,7 @@ Download: [Go (Linux)](https://go.dev/dl/)
 Now you need to unpack the package into the recommended default `directory` (you can change this to your preference) using a `tar` command prefixed with sudo `tag -xvf`:
 
 ```BASH
-sudo tar -C /usr/local -xvf go1.12.6.linux-amd64.tar.gz
+sudo tar -C /usr/local -xvf go1.22.5.linux-amd64.tar.gz
 ```
 
 &nbsp;
@@ -50,15 +50,6 @@ go version
 &nbsp;
 
 #### Setting up the environment
-
-Before running the exporter we need to install the libraries used in the code.
-
-```BASH
-go mod init segundo-exporter
-go mod tidy
-```
-
-&nbsp;
 
 Now we can compile the code as shown in the example below.
 
