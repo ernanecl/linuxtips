@@ -46,20 +46,11 @@ These are all the steps required to manually install `Go`. You can verify the in
 go version
 ```
 
-&nbsp;
-&nbsp;
-
-#### Setting up the environment
-
-Now we can compile the code as shown in the example below.
+Now we can compile the code as shown in the example below to generate a `Go binary` called `second-exporter`.
 
 ```BASH
 go build segundo-exporter.go
 ```
-
-&nbsp;
-
-Note that the command generated a Go binary called `segundo-exporter`, let's run it
 
 ```BASH
 ./segundo-exporter
@@ -68,9 +59,29 @@ Note that the command generated a Go binary called `segundo-exporter`, let's run
 &nbsp;
 &nbsp;
 
-Creating a container image with the `exporter` in `Go`.
+#### Fixing files
 
-Let's add `Golang exporter` to a `container`, for that we have to access the `Dockerfile` file and check if it follows the model below.
+Adjusting the `prometheus.yml` file
+
+```YML
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+  
+  - job_name: 'segundo-exporter'
+    static_configs:
+      - targets: ['localhost:7788']
+```
+
+&nbsp;
+
+Let's validate if the `Dockerfile` file is correct according to the model below.
 
 ```DOCKERFILE
 FROM golang:1.22.5-alpine3.20 AS construindo
@@ -90,6 +101,13 @@ CMD ["./segundo-exporter"]
 ```
 
 &nbsp;
+
+
+
+&nbsp;
+&nbsp;
+
+#### Creating a container image for `exporter` in `Go`
 
 Now let's `build` the image of our `exporter`, to do this we run the following command.
 
