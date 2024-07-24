@@ -111,7 +111,7 @@ docker build -t segundo-exporter:1.0 .
 Let's list the new `container image` with the `exporter`.
 
 ```BASH
-docker images | grep second-exporter
+docker images | grep segundo-exporter
 ```
 
 &nbsp;
@@ -119,7 +119,7 @@ docker images | grep second-exporter
 Okay, it's there, now run the exporter.
 
 ```BASH
-docker run -d --name second-exporter -p 7788:7788 second-exporter:1.0
+docker run -d --name segundo-exporter -p 7788:7788 segundo-exporter:1.0
 ```
 
 &nbsp;
