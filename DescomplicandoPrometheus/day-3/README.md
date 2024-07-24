@@ -1,6 +1,6 @@
 ## Content
 
-### Creating and running exporter using Go
+### Configuring new exporter using Golang
 
 You need to install the `Go` package, to install `Go` on `Debian`, just run the following command.
 
@@ -9,7 +9,7 @@ sudo apt install golang
 ```
 &nbsp;
 
-### Creating the exporter using Go
+#### Creating the exporter using Go
 
 Let's create a file called `second-exporter.go` in `second-exporter directory`.
 
@@ -175,11 +175,15 @@ Okay, it's there, now run the `exporter`.
 docker run -d --name second-exporter -p 7788:7788 second-exporter:1.0
 ```
 
+&nbsp;
+
 Now let's list our running `containers`.
 
 ```BASH
 docker ps
 ```
+
+&nbsp;
 
 Let's access the metrics with following command.
 
@@ -242,7 +246,7 @@ kill -HUP $(pidof prometheus)
 
 &nbsp;
 
-Access Prometheus via browser and check if the new target with the new metrics is there.
+Access `Prometheus` via `browser` and check if the new `target` with the new `metrics` is there.
 
 ```
 http://localhost:9090

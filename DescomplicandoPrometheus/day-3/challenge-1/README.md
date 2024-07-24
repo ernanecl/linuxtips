@@ -1,8 +1,8 @@
 ### Challenge 1 - Do some troubleshooting to get the Golang exporter working again
 
-#### Checking if the services are installed
+#### Checking services and installing Golang manually
 
-The services that need to be checked are `Prometheus`, `Golang` and `Docker`
+The services that need to be checked if they are installed are `Prometheus`, `Golang` and `Docker`.
 
 ```BASH
 prometheus --version
@@ -17,14 +17,14 @@ By checking all the above services, only `Golang` is not installed.
 To manually install `Go` on your `Linux` machine, you will first need to get the latest `Go TAR` package from the official `Golang` website. You can do this manually or by using the wget command on `Linux`:
 
 ```BASH
-wget https://go.dev/dl/go1.20.1.linux-amd64.tar.gz
+wget https://go.dev/dl/go1.22.5.linux-amd64.tar.gz
 ```
 
 &nbsp;
 
 Download: [Go (Linux)](https://go.dev/dl/)
 
-Now you need to unpack the package into the recommended default directory (you can change this to your preference) using a tar command prefixed with sudo tag -xvf:
+Now you need to unpack the package into the recommended default `directory` (you can change this to your preference) using a `tar` command prefixed with sudo `tag -xvf`:
 
 ```BASH
 sudo tar -C /usr/local -xvf go1.12.6.linux-amd64.tar.gz
@@ -47,6 +47,9 @@ go version
 ```
 
 &nbsp;
+&nbsp;
+
+#### Setting up the environment
 
 Before running the exporter we need to install the libraries used in the code.
 
@@ -74,11 +77,9 @@ Note that the command generated a Go binary called `segundo-exporter`, let's run
 &nbsp;
 &nbsp;
 
-### New container for second exporter
+Creating a container image with the `exporter` in `Go`.
 
-#### Creating a container image with the exporter in Go
-
-Let's add our `Golang exporter` to a `container`, we will create a file called `Dockerfile` in the `segundo-exporter` file with the following content:
+Let's add `Golang exporter` to a `container`, for that we have to access the `Dockerfile` file and check if it follows the model below.
 
 ```DOCKERFILE
 FROM golang:1.22.5-alpine3.20 AS construindo
@@ -98,3 +99,41 @@ CMD ["./segundo-exporter"]
 ```
 
 &nbsp;
+
+Now let's `build` the image of our `exporter`, to do this we run the following command.
+
+```BASH
+docker build -t segundo-exporter:1.0 .
+```
+
+&nbsp;
+
+Let's list the new `container image` with the `exporter`.
+
+```BASH
+docker images | grep second-exporter
+```
+
+&nbsp;
+
+Okay, it's there, now run the exporter.
+
+```BASH
+docker run -d --name second-exporter -p 7788:7788 second-exporter:1.0
+```
+
+&nbsp;
+
+Now let's list our running containers.
+
+```BASH
+docker ps
+```
+
+&nbsp;
+
+Let's access the metrics with following command.
+
+```BASH
+curl http://localhost:7788/metrics
+```
