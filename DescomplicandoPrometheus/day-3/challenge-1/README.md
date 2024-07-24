@@ -1,5 +1,19 @@
 ### Challenge 1 - Do some troubleshooting to get the Golang exporter working again
 
+#### External materials
+
+```
+https://go.dev/dl/
+```
+
+```
+https://linuxcapable.com/pt/como-instalar-golang-go-no-debian-linux/
+```
+
+```
+https://pt.linux-console.net/?p=12240#:~:text=Abra%20um%20terminal%20e%20execute%20o%20seguinte%20comando,-Syu%20No%20RHEL%20e%20Fedora%3A%20sudo%20dnf%20upgrade
+```
+
 #### Checking services and installing Golang manually
 
 The services that need to be checked if they are installed are `Prometheus`, `Golang` and `Docker`.
