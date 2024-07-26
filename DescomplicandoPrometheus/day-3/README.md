@@ -429,6 +429,48 @@ We will have as a result the number of values ​​that the metric `prometheus_
 
 ### AVG, min and max functions
 
+The `avg` function represents the average value of a metric.
+
+You can use the `avg` function in the `counter`, `gauge`, `histogram` and `summary` data types.
+
+This is one of the most used functions, as it is very common to want to know the average value of a metric, for example, the average value of `memory` used by a `container`.
+
+&nbsp;
+
+```PROMQL
+avg(metrica)
+```
+
+Where `metrica` is the metric you want to calculate the average of.
+
+&nbsp;
+
+The `min` function represents the minimum value of a metric.
+
+You can use the `min` function in the `counter`, `gauge`, `histogram` and `summary` data types.
+
+An example of using the `min` function is when you want to know the lowest value of `memory` used by a `container`.
+
+```PROMQL
+min(metric)
+```
+
+Where metric is the metric you want to calculate the minimum of.
+
+&nbsp;
+
+The `max` function represents the maximum value of a metric.
+
+An example of using the `max` function is when you want to know the maximum memory value for the nodes of a Kubernetes cluster.
+
+&nbsp;
+
+```PROMQL
+max(metric)
+```
+
+Where `metric` is the metric you want to calculate the maximum of.
+
 &nbsp;
 &nbsp;
 
