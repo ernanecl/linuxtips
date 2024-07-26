@@ -1,19 +1,19 @@
 ## Content
 
-### Configuring new exporter using Golang
+### Creating and configuring new exporter using Golang
 
-You need to install the `Go` package, to install `Go` on `Debian`, just run the following command.
+You need to install the `Go` package, to install `Go` on `Debian`, just run the following command:
 
 ```BASH
 sudo apt install golang
 ```
 &nbsp;
 
-#### Creating the exporter using Go
+Creating the exporter using `Go`.
 
 Let's create a file called `second-exporter.go` in `second-exporter directory`.
 
-And let's add the following code.
+And let's add the following code:
 
 ```GO
 package main
@@ -81,16 +81,17 @@ func main() { // função principal
 
 &nbsp;
 
-#### Installing the libraries to run exporter
+Installing the `libraries` to run `exporter`.
 
 Remember that we are using the `prometheus` package to create our exporter and `promhttp` to expose the metrics through a web server.
+
 We are also using the `memory` package to get the memory information from our server.
 
 We are using the `log` package to log any errors that may occur and the `net/http` package to create the webserver.
 
 &nbsp;
 
-Before running the exporter we need to install the libraries used in the code.
+Before running the `exporter` we need to install the `libraries` used in the code:
 
 ```BASH
 go mod init second-exporter
@@ -99,7 +100,7 @@ go mod tidy
 
 &nbsp;
 
-Now we can compile the code as shown in the example below.
+Now we can compile the code as shown in the example below:
 
 ```BASH
 go build segundo-exporter.go
@@ -107,7 +108,7 @@ go build segundo-exporter.go
 
 &nbsp;
 
-Note that the command generated a Go binary called `second-exporter`, let's run it
+Note that the command generated a Go binary called `second-exporter`, let's run it:
 
 ```BASH
 ./second-exporter
@@ -115,11 +116,11 @@ Note that the command generated a Go binary called `second-exporter`, let's run 
 
 &nbsp;
 
-#### Checking metrics
+Checking `metrics`.
 
-We can check the metrics by accessing the URL `http://localhost:7788/metrics`
+We can check the metrics by accessing the URL `http://localhost:7788/metrics`.
 
-You can also check the metrics using the `curl` command as shown below
+You can also check the metrics using the `curl` command as shown below:
 
 ```BASH
 curl http://localhost:7788/metrics
@@ -130,7 +131,7 @@ curl http://localhost:7788/metrics
 
 ### New container for second exporter
 
-#### Creating a container image with the exporter in Go
+Creating a container image with the `exporter` in `Go`.
 
 Let's add our `Golang exporter` to a `container`, we will create a file called `Dockerfile` in the `second-exporter` file with the following content:
 
@@ -153,7 +154,7 @@ CMD ["./second-exporter"]
 
 &nbsp;
 
-Now let's `build` the image of our `exporter`, to do this we run the following command.
+Now let's `build` the image of our `exporter`, to do this we run the following command:
 
 ```BASH
 docker build -t second-exporter:1.0 .
@@ -169,7 +170,7 @@ docker images | grep second-exporter
 
 &nbsp;
 
-Okay, it's there, now run the `exporter`.
+Okay, now run `exporter` on the container.
 
 ```BASH
 docker run -d --name second-exporter -p 7788:7788 second-exporter:1.0
@@ -194,9 +195,9 @@ curl http://localhost:7788/metrics
 &nbsp;
 &nbsp;
 
-#### Configuring Prometheus for new Target
+### Configuring Prometheus for new Target
 
-Accessing `prometheus.yml` file and adding the following content.
+Accessing `prometheus.yml` file and adding the following content:
 
 ```YML
 - job_name: 'segundo-exporter'
@@ -206,7 +207,7 @@ Accessing `prometheus.yml` file and adding the following content.
 
 &nbsp;
 
-The final version of the file will look like the model below.
+The final version of the file will look like the model below:
 
 ```YML
 global:
@@ -263,26 +264,91 @@ curl http://localhost:7788/metrics
 &nbsp;
 &nbsp;
 
+### Rate and irate functions
+
+The `rate` function represents the growth rate per second of a given metric as an `average`, over a time interval.
+
+&nbsp;
+
+```PROMQL
+rate(metrica)[5m]
+```
+
+Where `metrica` is the metric you want to calculate the growth rate for over a 5-minute time interval. You can use the rate function to work with metrics of the `gauge` and `counter` type.
+
+&nbsp;
+
+Let's look at a real example:
+
+```PROMQL
+rate(prometheus_http_requests_total{job="prometheus",handler="/api/v1/query"}[5m])
+```
+
+Here we are calculating the average growth rate per second of the metric `prometheus_http_requests_total`, filtering by `job` and `handler` over a 5-minute time interval.
+
+In this case I want to know the growth in `queries` that are being made in `Prometheus`.
 
 
+The `irate` function represents the growth rate per second of a given metric, but unlike the `rate` function, the `irate` function does not average the values, it takes the last two points and calculates the growth rate.
+
+When represented in a graph, it is possible to see the difference between the `rate` function and the `irate` function, while the graph with the `rate` is smoother, the graph with the `irate` is more "spiky", you can see sharper drops and rises.
+
+&nbsp;
+
+```PROMQL
+irate(metrica)[5m]
+```
+
+Where `metrica` is the metric for which you want to calculate the growth rate, considering only the last two points, during a time interval of 5 minutes.
+
+&nbsp;
+
+Let's look at a real example:
+
+```PROMQL
+irate(prometheus_http_requests_total{job="prometheus",handler="/api/v1/query"}[5m])
+```
+
+Here I'm calculating the growth rate per second of the metric `prometheus_http_requests_total`, considering only the last two points, filtering by `job` and `handler` and during a time interval of 5 minutes.
+
+In this case I want to know the growth in the `queries` that are being made in `Prometheus`.
+
+&nbsp; 
+&nbsp;
+
+### Delta and increase functions
+
 &nbsp;
 &nbsp;
+
+### Sum and count functions
+
 &nbsp;
 &nbsp;
+
+### AVG, min and max functions
+
 &nbsp;
 &nbsp;
+
+### Functions avg_over_time, min_over_time, max_over_time and stddev_over_time
+
 &nbsp;
 &nbsp;
+
+### Functions by and without
+
 &nbsp;
 &nbsp;
+
+### Quantile and histogram_quantile functions
+
 &nbsp;
 &nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
+
+### Simplifying Node Exporter
+
+
 &nbsp;
 &nbsp;
 &nbsp;
