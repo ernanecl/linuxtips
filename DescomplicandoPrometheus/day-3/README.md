@@ -288,6 +288,7 @@ Here we are calculating the average growth rate per second of the metric `promet
 
 In this case I want to know the growth in `queries` that are being made in `Prometheus`.
 
+&nbsp;
 
 The `irate` function represents the growth rate per second of a given metric, but unlike the `rate` function, the `irate` function does not average the values, it takes the last two points and calculates the growth rate.
 
@@ -317,6 +318,58 @@ In this case I want to know the growth in the `queries` that are being made in `
 &nbsp;
 
 ### Delta and increase functions
+
+The `delta` function represents the difference between the current value and the previous value of a metric.
+
+When we talk about `delta` we are talking about, for example, the consumption of a `disk`.
+
+Let's imagine that I want to know how much `disk` I used in a certain time interval, I can use the `delta` function to calculate the difference between the current value and the previous value.
+
+&nbsp;
+
+```PROMQL
+delta(metrica[5m])
+```
+
+Where metric is the metric for which you want to calculate the difference between the current value and the previous value, during a time interval of 5 minutes.
+
+&nbsp;
+
+Let's look at a real example:
+
+```PROMQL
+delta(prometheus_http_response_size_bytes_count{job="prometheus",handler="/api/v1/query"}[5m])
+```
+
+Now I'm calculating the difference between the current value and the previous value of the metric `prometheus_http_response_size_bytes_count`, filtering by `job` and `handler` during a time interval of 5 minutes.
+
+In this case I want to know how many `bytes` I'm consuming in the `queries` that are being made in `Prometheus`.
+
+&nbsp;
+
+The `increase` function, like the `delta` function, represents the difference between the first and last values ​​during a time interval. However, the difference is that the `increase` function considers the value to be a counter, that is, the value is incremented each time the metric is updated.
+
+It starts with the value 0 and adds the value of the metric with each update. You can already imagine what type of metric it works with, right? Counter!
+
+&nbsp;
+
+```PROMQL
+increase(metrica[5m])
+```
+
+Where `metrica` is the metric for which you want to calculate the difference between the first and last values ​​during a time interval of 5 minutes.
+
+&nbsp;
+
+Let's look at a real example:
+
+```PROMQL
+increase(prometheus_http_requests_total{job="prometheus",handler="/api/v1/query"}[5m])
+```
+
+Here we are calculating the difference between the first and last values ​​of the `prometheus_http_requests_total` metric, filtering by `job` and `handler` during a 5-minute time interval.
+
+You can follow the result of this `query` by clicking on `Graph` and then on `Execute`, so you will see the graph with the result of the `query` making more sense.
 
 &nbsp;
 &nbsp;
@@ -349,11 +402,11 @@ In this case I want to know the growth in the `queries` that are being made in `
 ### Simplifying Node Exporter
 
 
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
-&nbsp;
+
+
+
+
+
 &nbsp;
 &nbsp;
 &nbsp;
