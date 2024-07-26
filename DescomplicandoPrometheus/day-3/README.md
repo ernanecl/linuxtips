@@ -376,6 +376,54 @@ You can follow the result of this `query` by clicking on `Graph` and then on `Ex
 
 ### Sum and count functions
 
+The `sum` function represents the sum of all the values ​​of a metric.
+
+You can use the `sum` function on the `counter`, `gauge`, `histogram` and `summary` data types.
+
+An example of using the `sum` function is when you want to know how much `memory` is being used by all of your `containers`, or how much memory is being used by all of your `pods`.
+
+```PROMQL
+sum(metrica)
+```
+
+Where `metrica` is the metric you want to sum.
+
+&nbsp;
+
+Let's look at a real-world example:
+
+```PROMQL
+sum(go_memstats_alloc_bytes{job="prometheus"})
+```
+
+Here I'm summing all the values ​​of the `go_memstats_alloc_bytes` metric, filtering by `job` over a 5-minute time range.
+
+&nbsp;
+
+The `count` function is another widely used function, it represents the counter of a metric.
+
+You can use the `count` function on the `counter`, `gauge`, `histogram` and `summary` data types.
+
+An example of using the `count` function is when you want to know how many `containers` are running at a given time or how many `pods` are running.
+
+&nbsp;
+
+```PROMQL
+count(metrica)
+```
+
+Where metric is the metric you want to count.
+
+&nbsp;
+
+Let's look at a real example:
+
+```PROMQL
+count(prometheus_http_requests_total)
+```
+
+We will have as a result the number of values ​​that the metric `prometheus_http_requests_total` has.
+
 &nbsp;
 &nbsp;
 
@@ -400,14 +448,3 @@ You can follow the result of this `query` by clicking on `Graph` and then on `Ex
 &nbsp;
 
 ### Simplifying Node Exporter
-
-
-
-
-
-
-
-&nbsp;
-&nbsp;
-&nbsp;
-
