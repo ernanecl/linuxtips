@@ -476,6 +476,124 @@ Where `metric` is the metric you want to calculate the maximum of.
 
 ### Functions avg_over_time, min_over_time, max_over_time and stddev_over_time
 
+The ```avg_over_time``` function represents the `average` of a metric over a period of time.
+
+Typically used to calculate the `average` of a metric over a period of time, such as the average number of requests per second over a period of time or the number of people in the space over the last year.
+
+&nbsp;
+
+```PROMQL
+avg_over_time(metrica[5m])
+```
+
+Where `metrica` is the metric you want to average over a 5-minute period of time.
+
+&nbsp;
+
+Let's look at a real example:
+
+```PROMQL
+avg_over_time(prometheus_http_requests_total{handler="/api/v1/query"}[5m])
+```
+
+Now I'm calculating the `average` of the metric `prometheus_http_requests_total`, filtering by `handler` over a 5-minute time interval.
+
+&nbsp;
+
+The `sum_over_time` function represents the sum of a metric over a time interval.
+
+We saw `avg_over_time` which represents the average, `sum_over_time` represents the sum of the values ​​over a time interval.
+
+Imagine calculating the `sum` of a metric over a time interval, such as the `sum` of requests per second over a time interval or the sum of people who have been in the space over the last year.
+
+&nbsp;
+
+```PROMQL
+sum_over_time(metrica[5m])
+```
+
+Where `metrica` is the metric you want to calculate the `sum` over a 5 minute time interval.
+
+&nbsp;
+
+Let's go to a real example:
+
+```PROMQL
+sum_over_time(prometheus_http_requests_total{handler="/api/v1/query"}[5m])
+```
+
+Now I'm calculating the `sum` of the metric `prometheus_http_requests_total`, filtering by `handler` over a 5 minute time interval.
+
+&nbsp;
+
+The `max_over_time` function represents the `maximum` value of a metric over a time interval.
+
+&nbsp;
+
+```PROMQL
+max_over_time(metrica[5m])
+```
+
+Where `metrica` is the metric you want to calculate the `maximum` value over a 5 minute time interval.
+
+&nbsp;
+
+Let's go to a real example:
+
+```PROMQL
+max_over_time(prometheus_http_requests_total{handler="/api/v1/query"}[5m])
+```
+
+Now we are looking for the `maximum` value of the metric `prometheus_http_requests_total`, filtering by `handler` over a 5 minute time interval.
+
+&nbsp;
+
+The `min_over_time` function represents the minimum value of a metric over a time interval.
+
+&nbsp;
+
+```PROMQL
+min_over_time(metrica[5m])
+```
+
+Where `metrica` is the metric you want to calculate the `minimum` value for during a 5-minute time interval.
+
+&nbsp;
+
+Let's go to a real example:
+
+```PROMQL
+min_over_time(prometheus_http_requests_total{handler="/api/v1/query"}[5m])
+```
+
+Now we are looking for the `minimum` value of the `prometheus_http_requests_total` metric, filtering by `handler` during a 5-minute time interval.
+
+&nbsp;
+
+The `stddev_over_time` function represents the standard deviation, which are the values ​​that are furthest from the mean, of a metric during a time interval.
+
+A good example would be to calculate the standard deviation to find out if there was any anomaly in disk consumption, for example.
+
+&nbsp;
+
+```PROMQL
+stddev_over_time(metrica[5m])
+```
+
+Where `metrica` is the metric for which you want to calculate the standard deviation during a 5-minute time interval.
+
+&nbsp;
+
+Let's look at a real example:
+
+```PROMQL
+stddev_over_time(prometheus_http_requests_total{handler="/api/v1/query"}[10m])
+```
+
+Now we are looking for the standard deviations of the metric `prometheus_http_requests_total`, filtering by `handler` during a 10-minute time interval.
+
+It is worth checking the graph, as it makes it easier to visualize the values.
+
 &nbsp;
 &nbsp;
 
