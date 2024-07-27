@@ -474,7 +474,7 @@ Where `metric` is the metric you want to calculate the maximum of.
 &nbsp;
 &nbsp;
 
-### Functions avg_over_time, min_over_time, max_over_time and stddev_over_time
+### avg_over_time, sum_over_time, min_over_time, max_over_time and stddev_over_time functions
 
 The ```avg_over_time``` function represents the `average` of a metric over a period of time.
 
