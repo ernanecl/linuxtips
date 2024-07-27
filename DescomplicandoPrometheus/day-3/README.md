@@ -427,7 +427,7 @@ We will have as a result the number of values ​​that the metric `prometheus_
 &nbsp;
 &nbsp;
 
-### AVG, min and max functions
+### avg, min and max functions
 
 The `avg` function represents the average value of a metric.
 
@@ -598,6 +598,48 @@ It is worth checking the graph, as it makes it easier to visualize the values.
 &nbsp;
 
 ### Functions by and without
+
+The `by` function is used to group metrics. With it, it is possible to group metrics by `labels`, for example, if I want to group all metrics that have the `job` label, I can use the `by` function as follows:
+
+```PROMQL
+sum(metrica) by (job)
+```
+
+&nbsp;
+
+Where `metrica` is the metric you want to group and `job` is the `label` you want to group.
+
+&nbsp;
+
+Let's look at a real example:
+
+```PROMQL
+sum(prometheus_http_requests_total) by (code)
+```
+
+Now we are adding the `prometheus_http_requests_total` metric and grouping by `code`, so we know how many requests were made by response code.
+
+&nbsp;
+
+The without function is used to remove labels from a metric. You can use the without function on the `counter`, `gauge`, `histogram` and `summary` data types, often used in conjunction with the sum function.
+
+For example, if I want to remove the `job` label from a metric, I can use the `without` function as follows:
+
+```PROMQL
+sum(metrica) without (job)
+```
+
+Where `metrica` is the metric you want to remove the `job` label from.
+
+&nbsp;
+
+Let's look at a real example:
+
+```PROMQL
+sum(prometheus_http_requests_total) without (handler)
+```
+
+Now we are summing the `prometheus_http_requests_total` metric and removing the `label handler`, so we know how many requests were made by response code, without knowing which `handler` was used to have a more general view and focused on the response code.
 
 &nbsp;
 &nbsp;
