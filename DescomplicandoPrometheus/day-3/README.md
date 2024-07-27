@@ -641,10 +641,32 @@ sum(prometheus_http_requests_total) without (handler)
 
 Now we are summing the `prometheus_http_requests_total` metric and removing the `label handler`, so we know how many requests were made by response code, without knowing which `handler` was used to have a more general view and focused on the response code.
 
-&nbsp;
+
 &nbsp;
 
 ### Quantile and histogram_quantile functions
+
+The `histogram_quantile` and `quantile` functions are very similar, but `histogram_quantile` is used to calculate the `percentile` of a `histogram` type metric and `quantile` is used to calculate the `percentile` of a `summary` type metric.
+
+Basically, we use these functions to find out what the value of a metric is at a given `percentile`.
+
+&nbsp;
+
+```PROMQL
+quantile(0.95, metric)
+```
+
+Where `metric` is the `histogram` type metric for which you want to calculate the `percentile` and 0.95 is the `percentile` you want to calculate.
+
+&nbsp;
+
+Let's look at a real example:
+
+```PROMQL
+quantile(0.95, prometheus_http_request_duration_seconds_bucket)
+```
+
+Now we are calculating the 95% percentile of the `prometheus_http_request_duration_seconds_bucket` metric, so we know what the response time is for 95% of the requests.
 
 &nbsp;
 &nbsp;
