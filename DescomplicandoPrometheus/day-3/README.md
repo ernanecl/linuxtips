@@ -672,3 +672,268 @@ Now we are calculating the 95% percentile of the `prometheus_http_request_durati
 &nbsp;
 
 ### Simplifying Node Exporter
+
+`Node Exporter` allows you to collect `metrics` from `Linux` or `macOS` computers, such as `CPU usage`, `disk usage`, `memory usage`, `open files`, etc.
+
+`Node Exporter` is an `open source` project written in `Go`. Running on `Linux` as a service, it collects and exposes operating system metrics.
+
+
+&nbsp;
+
+`Node Exporter` has `collectors` that are responsible for capturing operating system `metrics`. By default, `Node Exporter` comes with a bunch of `collectors` enabled, but you can enable others if you want.
+
+To see the list of `collectors` that are `enabled by default`, you can access the link below:
+
+[Collectors enabled by default](https://github.com/prometheus/node_exporter#enabled-by-default)
+
+There is also a list of `collectors` that are `disabled by default`:
+
+[Collectors disabled by default](https://github.com/prometheus/node_exporter#disabled-by-default)
+
+&nbsp;
+
+Below are some useful `collectors` commented on:
+
+```
+arp: Coleta métricas de ARP (Address Resolution Protocol) como por exemplo, o número de entradas ARP, o número de resoluções ARP, etc.
+bonding: Coleta métricas de interfaces em modo bonding.
+conntrack: Coleta métricas de conexões via Netfilter como por exemplo, o número de conexões ativas, o número de conexões que estão sendo rastreadas, etc.
+cpu: Coleta métricas de CPU.
+diskstats: Coleta métricas de IO de disco como por exemplo o número de leituras e escritas.
+filefd: Coleta métricas de arquivos abertos.
+filesystem: Coleta métricas de sistema de arquivos, como tamanho, uso, etc.
+hwmon: Coleta métricas de hardware como por exemplo a temperatura.
+ipvs: Coleta métricas de IPVS.
+loadavg: Coleta métricas de carga do sistema operacional.
+mdadm: Coleta métricas de RAID como por exemplo o número de discos ativos.
+meminfo: Coleta métricas de memória como por exemplo o uso de memória, o número de buffers, caches, etc.
+netdev: Coleta métricas de rede como por exemplo o número de pacotes recebidos e enviados.
+netstat: Coleta métricas de rede como por exemplo o número de conexões TCP e UDP.
+os: Coleta métricas de sistema operacional.
+selinux: Coleta métricas de SELinux como estado e políticas.
+sockstat: Coleta métricas de sockets.
+stat: Coleta métricas de sistema como uptime, forks, etc.
+time: Coleta métricas de tempo como sincronização de relógio.
+uname: Coleta métricas de informações.
+vmstat: Coleta métricas de memória virtual.
+```
+
+&nbsp;
+&nbsp;
+
+Intalling `Node Exporter` on `Linux`
+
+The `Node Exporter` is a `binary` file that we need to download from the project's official website.
+
+Below is the `URL` to download the `Node Exporter`:
+
+```
+https://prometheus.io/download/#node_exporter
+```
+
+Access the URL and see which is the latest version available for download.
+
+Let's download the `Node Exporter` binary file:
+
+```BASH
+wget https://github.com/prometheus/node_exporter/releases/download/v1.8.2/node_exporter-1.8.2.linux-amd64.tar.gz
+```
+
+&nbsp;
+
+With the file already on our machine, let's unpack it:
+
+```BASH
+tar -xvzf node_exporter-1.3.1.linux-amd64.tar.gz
+```
+
+&nbsp;
+
+Since `Node Exporter` is just a `Go` binary, so it's very simple to install it on a `Linux` machine. Basically, we'll follow the same process we did to install `Prometheus`.
+
+Move the `node_exporter` file to the `/usr/local/bin` directory:
+
+```BASH
+sudo mv node_exporter-1.3.1.linux-amd64/node_exporter /usr/local/bin/
+```
+
+&nbsp;
+
+Check the Node Exporter version:
+
+```BASH
+node_exporter --version
+```
+
+&nbsp;
+
+Let's create the `node_exporter` user to be responsible for running the service:
+
+```BASH
+sudo addgroup --system node_exporter
+sudo adduser --shell /sbin/nologin --system --group node_exporter
+```
+
+&nbsp;
+
+Now let's create the `Node Exporter` service configuration file for `Systemd`:
+
+```BASH
+sudo vim /etc/systemd/system/node_exporter.service
+```
+
+Let's add the following content:
+
+```BASH
+[Unit] # Start of the service configuration file
+Description=Node Exporter # Description of the service
+Wants=network-online.target # Defines that the service depends on the network to start
+After=network-online.target # Defines that the service should be started after the network is available
+
+[Service] # Defines the service settings
+User=node_exporter # Defines the user that will run the service
+Group=node_exporter # Defines the group that will run the service
+Type=simple # Defines the service type
+ExecStart=/usr/local/bin/node_exporter # Defines the path to the service binary
+
+[Install] # Defines the service installation settings
+WantedBy=multi-user.target # Defines that the service will be started using the multi-user target
+```
+
+Important: Don't forget to remove the comments from the service configuration file.
+
+&nbsp;
+
+Every time we add a new service in `Systemd`, we need to restart it so that the service is recognized:
+
+```BASH
+sudo systemctl daemon-reload
+```
+
+&nbsp;
+
+Now let's start the service:
+
+```BASH
+sudo systemctl start node_exporter
+```
+
+&nbsp;
+
+We need to check if everything is ok with the service:
+
+```BASH
+sudo systemctl status node_exporter
+```
+
+&nbsp;
+
+The `Node Exporter` is running successfully, now let's enable the service so that it starts every time the server is restarted:
+
+```BASH
+sudo systemctl enable node_exporter
+```
+
+It is important to mention that the `Node Exporter` runs on port `9100`. To access the metrics collected by the `Node Exporter`, simply access the URL `http://<MACHINE_IP>:9100/metrics`.
+
+&nbsp;
+
+To check if `Node Exporter` is using port `9100`, we have the `ss` command that allows us to see the `TCP` and `UDP` connections that are open on our machine.
+
+Let's use this command to see if `Node Exporter` is listening on port `9100`:
+
+```BASH
+ss -atunp | grep 9100
+```
+
+&nbsp;
+
+Now let's see the metrics collected by it:
+
+```BASH
+curl http://localhost:9100/metrics
+```
+
+Remember to change `localhost` to the `IP` of your machine, if you installed it on another machine.
+
+&nbsp;
+
+Adding `Node Exporter` to `Prometheus`
+
+Remember that these metrics are not yet in `Prometheus`.
+
+In order for them to be there, we need to configure `Prometheus` to collect the metrics from `Node Exporter`, that is, configure `Prometheus` to `scrape` the `Node Exporter`.
+
+&nbsp;
+
+To do this, we need to create another job in the `Prometheus` configuration file to define our new `target`.
+
+Let's add the following content to the `Prometheus` configuration file:
+
+```YML
+  - job_name: 'node_exporter'
+	static_configs:
+	  - targets: ['localhost:9100']
+```
+
+Important: Remember again to change `localhost` to the `IP` of your machine, if you installed it on another machine.
+
+&nbsp;
+
+The file should look like this:
+
+```YML
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: "Meu Primeiro Exporter"
+    static_configs:
+      - targets: ["localhost:8899"]
+  
+  - job_name: 'segundo-exporter'
+    static_configs:
+      - targets: ['localhost:7788']
+
+  - job_name: 'node_exporter'
+	static_configs:
+	  - targets: ['localhost:9100']
+```
+
+&nbsp;
+
+Now let's restart `Prometheus` so it can read the new configurations:
+
+```BASH
+sudo systemctl restart prometheus
+```
+
+&nbsp;
+
+Let's see if the new job was successfully created:
+
+```BASH
+curl http://localhost:9090/targets
+```
+
+&nbsp;
+
+To see the new `target` via the `Prometheus` web interface, just access the URL `http://localhost:9090/targets`.
+
+&nbsp;
+
+`Prometheus Targets`
+
+Now let's see if `Prometheus` is collecting the metrics from `Node Exporter`.
+
+Let's pass the `job` name to `Prometheus`, so the `query` will be even more specific:
+
+```BASH
+curl -GET http://localhost:9090/api/v1/query --data-urlencode "query=node_cpu_seconds_total{job='node_exporter'}" | jq .
+```
